@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)http://www.html5.jp/test/perspective_canvas/demo1_en.html -->
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <title>Reclaim the walls</title>
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <script src="jquery.js"></script>
+        <script src="dades.js"></script>
+        <script src="perspective.js"></script>
+        <script>
+            var id = 0;
+            var imagepath="";
+            window.addEventListener("load", function() {
+
+                 document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                                
+                id = getURLParameter("id");
+                
+                imagepath = "images/t"+id+".jpg";
+                
+                replace(imagepath,"images/blank.png",points[id]);
+                
+            }, false);
+            
+            function handleFileSelect(evt) {
+                var files = evt.target.files; // FileList object
+                //alert(files[0].name);
+                replace(imagepath,"images/examples/"+files[0].name,points[id]);
+            }
+            
+            function replace(background,overlay,points){
+                 // General Canvas
+                    var canvas = document.getElementById("canvas");
+                    var ctx = canvas.getContext('2d');
+                  // BackGround
+                  var bg = new Image();
+                  bg.src = background;
+                  bg.onload = function(){
+                    canvas.height = bg.height;
+                    canvas.width = bg.width;
+                    canvas1.width = canvas.width;
+                    canvas1.height = canvas.height;
+              }
+              ctx.drawImage(bg,0,0);
+
+              // Overlay
+                var canvas1 = document.createElement('canvas');
+                var ctx1 = canvas1.getContext('2d');
+                var op = null;
+                var points = points;
+                var img = new Image();
+                img.src = overlay;
+                img.onload = function() {
+                    op = new html5jp.perspective(ctx1, img);
+                    op.draw(points);
+                    draw_canvas(ctx, ctx1, bg);
+                };
+            }
+                            
+            function draw_canvas(ctx, ctx1, bg) {
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                ctx.drawImage(bg, 0, 0);
+                ctx.drawImage(ctx1.canvas, 0, 0);
+            }
+            
+            function getURLParameter(name) {
+                return decodeURI(
+                    (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+                );
+            }
+
+            </script>
+            <style type="text/css"></style>
+    </head>
+
+    <body>
+        <div id="canvasHolder">
+            <canvas width="600" height="450" id="canvas"></canvas>
+        </div>
+        <div id="content">
+            <form id="imageform">
+                <input type="file" id="files" name="files[]">
+            </form>
+        </div>
+    </body>
+</html>
