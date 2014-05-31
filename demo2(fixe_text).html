@@ -29,13 +29,11 @@ window.addEventListener("load", function() {
 	var ctx1 = canvas1.getContext('2d');
 	var op = null;
 	var points = [[254, 347], [984, 350], [970, 697], [264, 621]];
-	var img = new Image();
-	img.src = 'data/dummy_overlay.png';
-	img.onload = function() {
-		op = new html5jp.perspective(ctx1, img);
-		op.draw(points);
-		draw_canvas(ctx, ctx1, bg);
-	};
+  ctx1.fillStyle = "white";
+  ctx1.fillText("Example Text", canvas1.width, canvas1.height);
+	op = new html5jp.perspective(ctx1, canvas1);
+	op.draw(points);
+	draw_canvas(ctx, ctx1, bg);
 
 }, false);
 
@@ -43,6 +41,7 @@ function draw_canvas(ctx, ctx1, bg) {
 	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 	ctx.drawImage(bg, 0, 0);
 	ctx.drawImage(ctx1.canvas, 0, 0);
+  console.log ("All loded! ");
 }
 
 })();
