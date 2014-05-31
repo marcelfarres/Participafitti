@@ -73,6 +73,7 @@ window.addEventListener("load", function() {
 		points[drag][0] = p.x;
 		points[drag][1] = p.y;
 		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+		// ctx.drawImage(bg, 0, 0);
 		ctx1.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 var s = (new Date()).getTime();
 		op.draw(points);
@@ -93,8 +94,8 @@ var s = (new Date()).getTime();
 
 function prepare_lines(ctx, p, with_line) {
 	ctx.save();
-	//ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-	ctx.clearRect(0, 0, 600, 450);
+	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	// ctx.clearRect(0, 0, 600, 450);
 	//
 	if( with_line == true ) {
 		ctx.beginPath();
@@ -123,6 +124,7 @@ function draw_canvas(ctx, ctx1, ctx2, bg) {
 	ctx.drawImage(bg, 0, 0);
 	ctx.drawImage(ctx1.canvas, 0, 0);
 	ctx.drawImage(ctx2.canvas, 0, 0);
+	// console.log(ctx.canvas.width, ctx1.canvas.width, ctx2.canvas.width);
 }
 
 function get_mouse_position(event) {
