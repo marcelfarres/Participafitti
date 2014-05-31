@@ -16,7 +16,6 @@ window.addEventListener("load", function() {
   // BackGround
   var bg = new Image();
   bg.src = "data/dummy.jpg";
-  ctx.drawImage(bg,0,0);
   bg.onload = function(){
 	  canvas.height = bg.height;
 	  canvas.width = bg.width;
@@ -25,6 +24,7 @@ window.addEventListener("load", function() {
 		canvas2.width = canvas.width;
 		canvas2.height = canvas.height;
 	}
+  ctx.drawImage(bg,0,0);
 	// 変形画像貼り付け用canvas要素
 	var canvas1 = document.createElement('canvas');
 	var ctx1 = canvas1.getContext('2d');
@@ -33,7 +33,7 @@ window.addEventListener("load", function() {
 	var ctx2 = canvas2.getContext('2d');
 	//
 	var op = null;
-	var points = [[50, 50], [550, 100], [300, 400], [100, 400]];
+	var points = [[254, 347], [984, 350], [970, 697], [264, 621]];
 	// img要素
 	var img = new Image();
 	img.src = 'data/dummy_overlay.png';
@@ -73,8 +73,8 @@ window.addEventListener("load", function() {
 		points[drag][0] = p.x;
 		points[drag][1] = p.y;
 		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-		// ctx.drawImage(bg, 0, 0);
 		ctx1.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+		console.log(points);
 var s = (new Date()).getTime();
 		op.draw(points);
 		prepare_lines(ctx2, points);
