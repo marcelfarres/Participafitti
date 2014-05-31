@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)http://www.html5.jp/test/perspective_canvas/demo1_en.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>perspective.js (alpha version) demo (static) - HTML5.JP</title>
+<link rel="stylesheet" href="./perspective.js (alpha version) demo (static) - HTML5.JP_files/style.css" type="text/css">
+<script src="./perspective.js (alpha version) demo (static) - HTML5.JP_files/perspective.js"></script>
+<script>
+(function () {
+
+window.addEventListener("load", function() {
+	// canvas要素
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext('2d');
+	// 変形画像貼り付け用canvas要素
+	var canvas1 = document.createElement('canvas');
+	canvas1.width = canvas.width;
+	canvas1.height = canvas.height;
+	var ctx1 = canvas1.getContext('2d');
+	// 補助線貼り付け用canvas要素
+	var canvas2 = document.createElement('canvas');
+	canvas2.width = canvas.width;
+	canvas2.height = canvas.height;
+	var ctx2 = canvas2.getContext('2d');
+	//
+	var op = null;
+	var points = [[50, 50], [550, 100], [300, 400], [100, 400]];
+	// img要素
+	var img = new Image();
+	img.src = 'pic.jpg';
+	img.onload = function() {
+		op = new html5jp.perspective(ctx1, img);
+		op.draw(points);
+		prepare_lines(ctx2, points);
+		draw_canvas(ctx, ctx1, ctx2);
+	};
+	// canvas要素にマウス関連イベントのリスナーをセット
+	var drag = null;
+	canvas.addEventListener("mousedown", function(event) {
+		event.preventDefault();
+		var p = get_mouse_position(event);
+		for( var i=0; i<4; i++ ) {
+			var x = points[i][0];
+			var y = points[i][1];
+			if( p.x < x + 10 && p.x > x - 10 && p.y < y + 10 && p.y > y - 10 ) {
+				drag = i;
+				break;
+			}
+		}
+	}, false);
+	canvas.addEventListener("mousemove", function(event) {
+		event.preventDefault();
+		if(drag == null) { return; }
+		var p = get_mouse_position(event);
+		points[drag][0] = p.x;
+		points[drag][1] = p.y;
+		prepare_lines(ctx2, points, true);
+		draw_canvas(ctx, ctx1, ctx2);
+	}, false);
+	canvas.addEventListener("mouseup", function(event) {
+		event.preventDefault();
+		if(drag == null) { return; }
+		var p = get_mouse_position(event);
+		points[drag][0] = p.x;
+		points[drag][1] = p.y;
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx1.clearRect(0, 0, canvas.width, canvas.height);
+var s = (new Date()).getTime();
+		op.draw(points);
+document.getElementById("ms").innerHTML = ( (new Date()).getTime() - s );
+		prepare_lines(ctx2, points);
+		draw_canvas(ctx, ctx1, ctx2);
+		drag = null;
+	}, false);
+	canvas.addEventListener("mouseout", function(event) {
+		event.preventDefault();
+		drag = null;
+	}, false);
+	canvas.addEventListener("mouseenter", function(event) {
+		event.preventDefault();
+		drag = null;
+	}, false);
+
+}, false);
+
+function prepare_lines(ctx, p, with_line) {
+	ctx.save();
+	//ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	ctx.clearRect(0, 0, 600, 450);
+	//
+	if( with_line == true ) {
+		ctx.beginPath();
+		ctx.moveTo(p[0][0], p[0][1]);
+		for( var i=1; i<4; i++ ) {
+			ctx.lineTo(p[i][0], p[i][1]);
+		}
+		ctx.closePath();
+		ctx.strokeStyle = "red";
+		ctx.stroke();
+	}
+	//
+	ctx.fillStyle = "red";
+	for( var i=0; i<4; i++ ) {
+		ctx.beginPath();
+		ctx.arc(p[i][0], p[i][1], 4, 0, Math.PI*2, true);
+		ctx.fill();
+	}
+	//
+	ctx.restore();
+}
+
+function draw_canvas(ctx, ctx1, ctx2) {
+	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	ctx.drawImage(ctx1.canvas, 0, 0);
+	ctx.drawImage(ctx2.canvas, 0, 0);
+}
+
+function get_mouse_position(event) {
+	var rect = event.target.getBoundingClientRect() ;
+	return {
+		x: event.clientX - rect.left,
+		y: event.clientY - rect.top
+	};
+}
+
+})();
+</script>
+<style type="text/css"></style></head>
+<body>
+
+<h1>perspective.js (alpha version) demo (static)</h1>
+<p>[<a href="http://www.html5.jp/test/perspective_canvas/demo1.html" hreflang="ja" lang="ja">日本語(Japanese)</a>]</p>
+<p><b>perspective.js</b> is a JavaScript library which allow you to transform a rectangle image into an arbitrary form of quadrilateral on a canavs element. It is used to draw an image using perspective on a canvas. It can handle not only an <code>HTMLImageElement</code> object (an object of <code>&lt;img&gt;</code>) but also a <code>HTMLCanvasElement</code> object (an object of <code>&lt;canvas&gt;</code>) as an original rectangle image.</p>
+<p><b>perspective.js</b> puts the quality of transformed image ahead of the speed of the transformation. Therefore it will not be good for animations. But, I have done everything to improve the performance as far as I could. If you use a small image, it will go well.</p>
+<p>It is work in progress. Even now, I am making an effort to improve the library. When completed, I will release <b>perspective.js</b> at <a href="http://www.html5.jp/" hreflang="ja">HTML5.JP</a>.</p>
+<p>I confirmed that <b>perspective.js</b> works on IE9, Firefox 3.6, Opera 10.70, Safari 5.0, Chrome 6.0 or later. Try the demo below!</p>
+<p>The photo below is originally a rectangle which is 600 x 450 scale. Check <a href="http://www.html5.jp/test/perspective_canvas/pic.jpg" target="_blnank">the original photo</a>. Drag the corner of the photo (red circles) using your mouse. The photo will be transformed.</p>
+<p><canvas width="600" height="450" id="canvas"></canvas></p>
+<p>Processing Time: <span id="ms">1392</span> ms</p>
+<p>If you use Chrome 6 or Opera 10.70, try <a href="http://www.html5.jp/test/perspective_canvas/demo2.html">a dynamic version</a>. You will be able to transform the photo on a real-time basis, smoothly.</p>
+<p>Your comment, advice, feedback are big welcome. Thank you.</p>
+<address><a href="http://twitter.com/futomi">@futomi</a></address>
+<script src="./perspective.js (alpha version) demo (static) - HTML5.JP_files/accp.js"></script>
+
+</body></html>
