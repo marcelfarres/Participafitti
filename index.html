@@ -9,27 +9,50 @@
 
 <body>
 <div id="content">
-    <canvas id="canvas" width="500" height="500">
+  <canvas id="canvas" width="500" height="500">
 </div>
 </body>
-    
+  
+<!-- <script type="text/javascript" src="transform_func.js"></script>   -->
+
+<script type="text/javascript" src="./prespective.js"></script>
+
 <script type="text/javascript">
-    var context = document.getElementById("canvas").getContext("2d");
-    
-    var overlay = new Image();
-    overlay.src = "dummy_overlay.png";  
-    
-    var bg = new Image();
-    bg.src = "dummy.jpg";
-    
+  
+  var ctx = document.getElementById("canvas").getContext("2d");
+  var ctx1 = document.getElementById("canvas").getContext("2d");
+
+  // Overlay
+  var op = null;
+  var points = [[50, 50], [550, 100], [300, 400], [100, 400]]; 
+  var overlay = new Image();
+  overlay.src = "data/dummy_overlay.png";  
+  // var x             = 280;
+  // var y             = 270;
+  // var pixelWidth    = 700;
+  // var scalingFactor = 0.7;
+
+
+  // BackGround
+  var bg = new Image();
+  bg.src = "data/dummy.jpg";
+
+
+  bg.onload = function(){
     canvas.height = bg.height;
     canvas.width = bg.width;
-    
-    bg.onload = function(){
-            context.drawImage(bg,0,0);
-        context.setTransform(1.08,0.2,0.2,0.8,255,350);
-        context.drawImage(overlay,0,0);
-    }
+    context.drawImage(bg,0,0);
+
+    op = new html5jp.prespective(context, overlay);
+    op.draw(points);
+
+
+    keystoneAndDisplayImage(context, overlay, x, y, pixelWidth, scalingFactor);
+    // context.setTransform(1.08,0.2,0.2,0.8,255,350);
+    // context.drawImage(overlay,0,0);
+  }
 
 </script>
+
+
 </html>
