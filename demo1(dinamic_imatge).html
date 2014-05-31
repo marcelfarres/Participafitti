@@ -3,7 +3,6 @@
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="UTF-8">
 <title>Image+Text/Image/... </title>
-<link rel="stylesheet" href="style.css" type="text/css">
 <script src="perspective.js"></script>
 <script>
 (function () {
@@ -15,7 +14,7 @@ window.addEventListener("load", function() {
 	var ctx = canvas.getContext('2d');
   // BackGround
   var bg = new Image();
-  bg.src = "data/dummy.jpg";
+  bg.src = "images/t6.jpg";
   bg.onload = function(){
 	  canvas.height = bg.height;
 	  canvas.width = bg.width;
@@ -33,7 +32,7 @@ window.addEventListener("load", function() {
 	var ctx2 = canvas2.getContext('2d');
 	//
 	var op = null;
-	var points = [[254, 347], [984, 350], [970, 697], [264, 621]];
+	var points = [[254, 347], [500, 350], [500, 500], [264, 621]];
 	// img要素
 	var img = new Image();
 	img.src = 'data/dummy_overlay.png';
