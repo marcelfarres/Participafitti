@@ -1,0 +1,35 @@
+<!DOCTYPE html >
+<html>
+<head>
+	<meta charset="UTF-"></meta> 
+	<title>Participafitti</title>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+
+
+<body>
+<div id="content">
+    <canvas id="canvas" width="500" height="500">
+</div>
+</body>
+    
+<script type="text/javascript">
+    var context = document.getElementById("canvas").getContext("2d");
+    
+    var overlay = new Image();
+    overlay.src = "dummy_overlay.png";  
+    
+    var bg = new Image();
+    bg.src = "dummy.jpg";
+    
+    canvas.height = bg.height;
+    canvas.width = bg.width;
+    
+    bg.onload = function(){
+            context.drawImage(bg,0,0);
+        context.setTransform(1.08,0.2,0.2,0.8,255,350);
+        context.drawImage(overlay,0,0);
+    }
+
+</script>
+</html>

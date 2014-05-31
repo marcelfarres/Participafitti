@@ -1,0 +1,15 @@
+#content{
+    width:100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#background{
+}
+
+#overlay{
+    position:absolute;  
+    top:360px;
+    left:380px;
+     transform: skew(-20deg,20deg);
+}
