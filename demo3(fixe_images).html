@@ -1,61 +1,74 @@
 <!DOCTYPE html>
 <!-- saved from url=(0057)http://www.html5.jp/test/perspective_canvas/demo1_en.html -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="UTF-8">
-<title>Image+Text/Image/... </title>
-<link rel="stylesheet" href="style.css" type="text/css">
-<script src="perspective.js"></script>
-<script>
-(function () {
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
+        <title>Reclaim the walls</title>
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <script src="jquery.js"></script>
+        <script src="perspective.js"></script>
+        <script>
+            window.addEventListener("load", function() {
 
-window.addEventListener("load", function() {
+                 document.getElementById('files').addEventListener('change', handleFileSelect, false);
+                
+                replace("data/dummy.jpg","http://images5.fanpop.com/image/photos/25600000/Hello-Kitty-Sitting-hello-kitty-25604546-1210-1429.jpg",[[254, 347], [984, 350], [970, 697], [264, 621]]);
+                
+            }, false);
+            
+            function handleFileSelect(evt) {
+                var files = evt.target.files; // FileList object
+                //alert(files[0].name);
+                replace("data/dummy.jpg","images/"+files[0].name,[[254, 347], [984, 350], [970, 697], [264, 621]]);
+            }
+            
+            function replace(background,overlay,points){
+                 // General Canvas
+                    var canvas = document.getElementById("canvas");
+                    var ctx = canvas.getContext('2d');
+                  // BackGround
+                  var bg = new Image();
+                  bg.src = background;
+                  bg.onload = function(){
+                    canvas.height = bg.height;
+                    canvas.width = bg.width;
+                    canvas1.width = canvas.width;
+                    canvas1.height = canvas.height;
+              }
+              ctx.drawImage(bg,0,0);
 
-	// General Canvas
-	var canvas = document.getElementById("canvas");
-	var ctx = canvas.getContext('2d');
-  // BackGround
-  var bg = new Image();
-  bg.src = "data/dummy.jpg";
-  bg.onload = function(){
-	  canvas.height = bg.height;
-	  canvas.width = bg.width;
-		canvas1.width = canvas.width;
-		canvas1.height = canvas.height;
-  }
-  ctx.drawImage(bg,0,0);
+              // Overlay
+                var canvas1 = document.createElement('canvas');
+                var ctx1 = canvas1.getContext('2d');
+                var op = null;
+                var points = points;
+                var img = new Image();
+                img.src = overlay;
+                img.onload = function() {
+                    op = new html5jp.perspective(ctx1, img);
+                    op.draw(points);
+                    draw_canvas(ctx, ctx1, bg);
+                };
+            }
+                            
+            function draw_canvas(ctx, ctx1, bg) {
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                ctx.drawImage(bg, 0, 0);
+                ctx.drawImage(ctx1.canvas, 0, 0);
+            }
+            </script>
+            <style type="text/css"></style>
+    </head>
 
-  // Overlay
-	var canvas1 = document.createElement('canvas');
-	var ctx1 = canvas1.getContext('2d');
-	var op = null;
-	var points = [[254, 347], [984, 350], [970, 697], [264, 621]];
-	var img = new Image();
-	img.src = 'data/dummy_overlay.png';
-	img.onload = function() {
-		op = new html5jp.perspective(ctx1, img);
-		op.draw(points);
-		draw_canvas(ctx, ctx1, bg);
-	};
-
-}, false);
-
-function draw_canvas(ctx, ctx1, bg) {
-	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-	ctx.drawImage(bg, 0, 0);
-	ctx.drawImage(ctx1.canvas, 0, 0);
-}
-
-})();
-</script>
-
-
-<style type="text/css"></style></head>
-
-
-<body>
-
-
-<p><canvas width="600" height="450" id="canvas"></canvas></p>
-
-
-</body></html>
+    <body>
+        <div id="canvasHolder">
+            <canvas width="600" height="450" id="canvas"></canvas>
+        </div>
+        <div id="content">
+            <form id="imageform">
+                <input type="file" id="files" name="files[]">
+            </form>
+        </div>
+    </body>
+</html>
